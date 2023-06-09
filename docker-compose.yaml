@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  app:
+    build: 
+      context: .
+      dockerfile: dockerfile
+    depends_on:
+      - open3d-viewer
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+    environment:
+      - DISPLAY=${DISPLAY}
+    network_mode: "host"
+
+  open3d-viewer:
+    build: 
+      context: ./open3d
+      dockerfile: dockerfile
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - .:/root
+    environment:
+      - DISPLAY=${DISPLAY}
+    network_mode: "host"

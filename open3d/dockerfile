@@ -1,0 +1,35 @@
+FROM ubuntu:20.04 AS viewer
+
+COPY open3d*.deb /root/
+
+RUN apt-get update \
+    && apt-get install --yes /root/open3d*.deb \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN mkdir -p /usr/share/Open3D/bin/
+RUN cp /usr/local/bin/Open3D /usr/share/Open3D/bin/Open3D
+
+ENTRYPOINT ["Open3D"]
+
+# FROM viewer as app
+
+# # Install Open3D system dependencies and pip
+# RUN apt-get update && apt-get install --no-install-recommends -y \
+#     libegl1 \
+#     libgl1 \
+#     libgomp1 \
+#     python3-pip \
+#     && rm -rf /var/lib/apt/lists/*
+
+# # Install Open3D from the PyPI repositories
+# RUN python3 -m pip install --no-cache-dir --upgrade pip && \
+#     python3 -m pip install --no-cache-dir --upgrade open3d
+
+# WORKDIR /app
+# COPY ./requirements.txt .
+# RUN pip install -r requirements.txt
+# COPY . .
+
+# ENV PYTHONUNBUFFERED=1
+
+# CMD ["example", "main.py"]
